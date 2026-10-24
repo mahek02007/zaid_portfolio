@@ -6,8 +6,8 @@
   <title>Zaid — Video Editor & Graphic Designer | Midnight Creator Portfolio</title>
   <meta name="description" content="Portfolio of Zaid: Video Editor and Graphic Designer. Reels, YouTube, Gaming content, Color Grading, and bespoke Invitation Design. Better Edits. Bigger Dreams.">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23c084fc'%3E%3Cpath d='M2 19h20v2H2zM2 5l5 7 5-7 5 7 5-7v12H2z'/%3E%3C/svg%3E">
-  <script type="module" crossorigin src="/assets/index-BNiO1vqX.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/index-Dovhqy-6.css">
+  <script type="module" crossorigin src="/assets/index-DVLSxtuI.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-BPaUfXMC.css">
 </head>
 <body>
 
@@ -60,7 +60,7 @@
           <li><a href="#home" class="nav-link active">Home</a></li>
           <li><a href="#work" class="nav-link">Work</a></li>
           <li><a href="#services" class="nav-link">Services</a></li>
-          <li><a href="#color-lab" class="nav-link">Color Lab</a></li>
+          <li><a href="#editing-lab" class="nav-link">Editing Lab</a></li>
           <li><a href="#about" class="nav-link">About</a></li>
           <li><a href="#contact" class="nav-link">Contact</a></li>
         </ul>
@@ -90,7 +90,7 @@
       <li><a href="#home" class="mobile-nav-link">Home</a></li>
       <li><a href="#work" class="mobile-nav-link">Work</a></li>
       <li><a href="#services" class="mobile-nav-link">Services</a></li>
-      <li><a href="#color-lab" class="mobile-nav-link">Color Lab</a></li>
+      <li><a href="#editing-lab" class="mobile-nav-link">Editing Lab</a></li>
       <li><a href="#about" class="mobile-nav-link">About</a></li>
       <li><a href="#contact" class="mobile-nav-link">Contact</a></li>
     </ul>
@@ -268,44 +268,137 @@
           </div>
         </div>
 
-        <!-- ==========================================================================
-             COLOR GRADE STUDIO LAB (Interactive Split-Slider)
-             ========================================================================== -->
-        <div id="color-lab" class="color-grade-lab">
-          <div class="lab-header">
-            <div class="lab-title-area">
-              <div class="section-label">Color Science &amp; Mood</div>
-              <h3>Interactive Color-Grade Lab</h3>
-              <p>Drag the slider to compare uncorrected Flat Log / Sensor footage against Zaid’s custom Cinematic Midnight LUT grade.</p>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SECTION: INTERACTIVE EDITING LAB (BEFORE / AFTER COMPARISON STUDIO)
+         ========================================================================== -->
+    <section id="editing-lab" class="section-spacing editing-lab-section">
+      <div class="container">
+        <!-- Lab Header & Studio Bar -->
+        <div class="lab-main-header">
+          <div class="lab-header-left">
+            <div class="section-label">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+              <span>Interactive Post-Production Suite</span>
             </div>
-            <div class="hand-badge">
-              <span>"Mood makes the memory"</span>
-            </div>
+            <h2 class="section-title">
+              THE <span class="gradient-text">EDITING LAB</span>
+            </h2>
+            <p class="section-desc">
+              Slide to compare raw unedited production footage against Zaid’s final cut. Experience how framing, pacing, color science, and audio sweetening transform the narrative.
+            </p>
           </div>
 
-          <div id="splitSlider" class="split-slider-container" role="slider" aria-label="Color grade comparison slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" tabindex="0">
-            <!-- Flat RAW/Log Layer -->
-            <div class="split-layer split-layer-raw"></div>
-            <!-- Graded Layer -->
-            <div id="gradedLayer" class="split-layer split-layer-graded"></div>
-            
-            <!-- Badges -->
-            <div class="split-badge split-badge-raw">Flat Log / Rec.709 Raw</div>
-            <div class="split-badge split-badge-graded">Midnight Cinematic Grade</div>
+          <!-- Studio Toolbar & Presets -->
+          <div class="lab-header-actions">
+            <div class="lab-preset-selector" role="tablist" aria-label="Editing comparison modes">
+              <button class="lab-preset-btn active" data-preset="preset-color" role="tab" aria-selected="true">
+                <span>Color Grade (Log vs. Rec.709)</span>
+              </button>
+              <button class="lab-preset-btn" data-preset="preset-pacing" role="tab" aria-selected="false">
+                <span>Pacing &amp; Kinetic VFX</span>
+              </button>
+            </div>
 
-            <!-- Movable Handle -->
-            <div id="splitHandle" class="split-handle">
-              <div class="split-handle-pill" aria-hidden="true">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="15 18 9 12 15 6"></polyline>
-                  <polyline points="9 18 15 12 9 6" style="display:none;"></polyline>
-                </svg>
+            <div class="lab-tools-toolbar">
+              <button id="labResetBtn" class="lab-tool-btn" type="button" aria-label="Reset slider to center [50%]">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg>
+                <span>Reset Center</span>
+              </button>
+              <div class="lab-quick-jumps">
+                <button class="lab-jump-btn" data-val="25" type="button" aria-label="Jump to 25%">25%</button>
+                <button class="lab-jump-btn active" data-val="50" type="button" aria-label="Jump to 50%">50%</button>
+                <button class="lab-jump-btn" data-val="75" type="button" aria-label="Jump to 75%">75%</button>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+
+        <!-- Studio Cinematic Comparison Console -->
+        <div class="editing-lab-console">
+          <!-- Console Top Status Bar -->
+          <div class="console-status-bar">
+            <div class="console-status-left">
+              <span class="console-led live-led"></span>
+              <span class="console-status-text">COMPARISON ENGINE LOCKED</span>
+              <span class="console-status-divider">&bull;</span>
+              <span class="console-codec-tag">PRORES 422 HQ &bull; 4K DCI TIMELINE</span>
+            </div>
+            <div class="console-status-right">
+              <span id="sliderPositionReadout" class="console-percentage">DIVIDER: 50%</span>
+            </div>
+          </div>
+
+          <!-- Main Interactive Split Stage Container -->
+          <div id="editingComparisonStage" class="editing-comparison-stage" role="slider" aria-label="Before and after editing comparison divider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" tabindex="0">
+            <!-- BEFORE LAYER (Raw Unedited Capture) -->
+            <div class="comparison-layer layer-before">
+              <div class="layer-media-container" id="beforeMediaContainer">
+                <video id="labVideoBefore" class="lab-video-sync" playsinline muted loop preload="metadata" style="display: none;"></video>
+                <div id="beforeStillFallback" class="lab-still-fallback before-log-profile"></div>
+              </div>
+              <div class="comparison-badge badge-before">
+                <span class="badge-tag">ORIGINAL</span>
+                <span id="beforeBadgeTitle" class="badge-title">RAW SENSOR CAPTURE</span>
+                <span id="beforeBadgeSub" class="badge-desc">Flat Log Profile &bull; Zero LUT &bull; Raw Camera Take</span>
+              </div>
+            </div>
+
+            <!-- AFTER LAYER (Zaid's Final Edit) -->
+            <div id="layerAfter" class="comparison-layer layer-after">
+              <div class="layer-media-container" id="afterMediaContainer">
+                <video id="labVideoAfter" class="lab-video-sync" playsinline muted loop preload="metadata" style="display: none;"></video>
+                <div id="afterStillFallback" class="lab-still-fallback after-graded-profile"></div>
+              </div>
+              <div class="comparison-badge badge-after">
+                <span class="badge-tag accent">FINAL MASTER</span>
+                <span id="afterBadgeTitle" class="badge-title">ZAID'S EDIT</span>
+                <span id="afterBadgeSub" class="badge-desc">Cinematic Curve &bull; Kinetic Pacing &bull; Mastered Sound</span>
+              </div>
+            </div>
+
+            <!-- Movable High-Precision Split Divider Handle -->
+            <div id="editingLabDivider" class="editing-lab-divider">
+              <div class="divider-line"></div>
+              <div id="editingLabHandle" class="divider-handle-pill" tabindex="0" role="button" aria-label="Drag comparison divider left or right">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="15 18 9 12 15 6"></polyline>
+                  <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+              </div>
+            </div>
+
+            <!-- Explicit Demo Notice Banner -->
+            <div class="demo-placeholder-banner" id="labDemoBanner">
+              <div class="demo-banner-pill">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                <span>DEMO COMPARISON: Configured for real raw &amp; final footage in <code>src/portfolio-data.js</code></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Console Control Strip -->
+          <div class="console-bottom-strip">
+            <div class="sync-playback-controls">
+              <button id="syncPlayBtn" class="sync-play-btn" type="button" aria-label="Toggle synchronized before and after playback">
+                <svg id="syncPlayIcon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                <svg id="syncPauseIcon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="display:none;"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+                <span id="syncPlayText">Simulate Dual Synchronized Playback</span>
+              </button>
+
+              <span class="sync-lock-indicator">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                <span>Dual-Stream Lock: 100% Frame-Accurate</span>
+              </span>
+            </div>
+
+            <div class="console-instructions">
+              <span class="instruction-tip">Drag divider or use Left / Right Arrow keys. Press 'R' to reset center.</span>
+            </div>
+          </div>
+        </div>
 
     <!-- ==========================================================================
          SECTION 6: SERVICES PREVIEW

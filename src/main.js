@@ -2,7 +2,7 @@
  * ZAID PORTFOLIO - "MIDNIGHT CREATOR" CORE INTERACTION & VIDEO VIEWER ENGINE
  */
 
-import { PORTFOLIO_CATEGORIES, PORTFOLIO_PROJECTS } from './portfolio-data.js';
+import { PORTFOLIO_CATEGORIES, PORTFOLIO_PROJECTS, EDITING_LAB_CONFIG } from './portfolio-data.js';
 
 let currentFilter = 'all';
 let activeFilteredProjects = [...PORTFOLIO_PROJECTS];
@@ -13,10 +13,11 @@ document.addEventListener('DOMContentLoaded', () => {
   initIntro();
   initNavigation();
   initPortfolioGrid();
-  initColorGradeSlider();
+  initEditingLab();
   initVideoViewer();
   initBriefModal();
   initDirectContact();
+  initScrollReveal();
   initFooterYear();
 });
 
@@ -681,25 +682,67 @@ function startCanvasSimulation(videoPlayer, stageContainer) {
 }
 
 /* ==========================================================================
-   5. INTERACTIVE COLOR-GRADE SPLIT SLIDER
+   5. INTERACTIVE EDITING LAB (BEFORE / AFTER COMPARISON STUDIO)
    ========================================================================== */
-function initColorGradeSlider() {
-  const container = document.getElementById('splitSlider');
-  const gradedLayer = document.getElementById('gradedLayer');
-  const handle = document.getElementById('splitHandle');
-  if (!container || !gradedLayer || !handle) return;
+function initEditingLab() {
+  const stage = document.getElementById('editingComparisonStage');
+  const layerAfter = document.getElementById('layerAfter');
+  const divider = document.getElementById('editingLabDivider');
+  const handle = document.getElementById('editingLabHandle');
+  const readout = document.getElementById('sliderPositionReadout');
+  const resetBtn = document.getElementById('labResetBtn');
+  const jumpBtns = document.querySelectorAll('.lab-jump-btn');
+  const presetBtns = document.querySelectorAll('.lab-preset-btn');
+  const syncPlayBtn = document.getElementById('syncPlayBtn');
+  const syncPlayIcon = document.getElementById('syncPlayIcon');
+  const syncPauseIcon = document.getElementById('syncPauseIcon');
+  const syncPlayText = document.getElementById('syncPlayText');
+  const videoBefore = document.getElementById('labVideoBefore');
+  const videoAfter = document.getElementById('labVideoAfter');
+  const beforeStill = document.getElementById('beforeStillFallback');
+  const afterStill = document.getElementById('afterStillFallback');
+  const beforeTitle = document.getElementById('beforeBadgeTitle');
+  const beforeSub = document.getElementById('beforeBadgeSub');
+  const afterTitle = document.getElementById('afterBadgeTitle');
+  const afterSub = document.getElementById('afterBadgeSub');
 
+  if (!stage || !layerAfter || !divider) return;
+
+  let currentSplit = 50;
   let isDragging = false;
+  let isSyncPlaying = false;
 
-  const updateSplit = (percentage) => {
-    const clamped = Math.max(0, Math.min(100, percentage));
-    gradedLayer.style.clipPath = `polygon(0 0, ${clamped}% 0, ${clamped}% 100%, 0 100%)`;
-    handle.style.left = `${clamped}%`;
-    container.setAttribute('aria-valuenow', Math.round(clamped));
+  const setSplit = (percentage, animate = false) => {
+    currentSplit = Math.max(0, Math.min(100, percentage));
+    
+    if (animate) {
+      layerAfter.style.transition = 'clip-path 0.3s cubic-bezier(0.16, 1, 0.3, 1)';
+      divider.style.transition = 'left 0.3s cubic-bezier(0.16, 1, 0.3, 1)';
+      setTimeout(() => {
+        layerAfter.style.transition = '';
+        divider.style.transition = '';
+      }, 300);
+    }
+
+    layerAfter.style.clipPath = `polygon(0 0, ${currentSplit}% 0, ${currentSplit}% 100%, 0 100%)`;
+    divider.style.left = `${currentSplit}%`;
+
+    stage.setAttribute('aria-valuenow', Math.round(currentSplit));
+    if (handle) handle.setAttribute('aria-valuenow', Math.round(currentSplit));
+    if (readout) readout.textContent = `DIVIDER: ${Math.round(currentSplit)}%`;
+
+    jumpBtns.forEach(btn => {
+      const val = Number(btn.getAttribute('data-val'));
+      if (Math.abs(val - currentSplit) < 2) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    });
   };
 
-  const getPositionX = (e) => {
-    const rect = container.getBoundingClientRect();
+  const getPositionFromEvent = (e) => {
+    const rect = stage.getBoundingClientRect();
     const clientX = e.touches ? e.touches[0].clientX : e.clientX;
     const offset = clientX - rect.left;
     return (offset / rect.width) * 100;
@@ -707,36 +750,134 @@ function initColorGradeSlider() {
 
   const startDrag = (e) => {
     isDragging = true;
-    updateSplit(getPositionX(e));
+    setSplit(getPositionFromEvent(e));
   };
 
-  const doDrag = (e) => {
+  const onDrag = (e) => {
     if (!isDragging) return;
-    updateSplit(getPositionX(e));
+    setSplit(getPositionFromEvent(e));
   };
 
   const stopDrag = () => {
     isDragging = false;
   };
 
-  container.addEventListener('mousedown', startDrag);
-  window.addEventListener('mousemove', doDrag);
+  // Mouse drag
+  stage.addEventListener('mousedown', startDrag);
+  window.addEventListener('mousemove', onDrag);
   window.addEventListener('mouseup', stopDrag);
 
-  container.addEventListener('touchstart', startDrag, { passive: true });
-  window.addEventListener('touchmove', doDrag, { passive: true });
+  // Touch drag (touch-action: pan-y in CSS allows vertical page scrolling)
+  stage.addEventListener('touchstart', startDrag, { passive: true });
+  window.addEventListener('touchmove', onDrag, { passive: true });
   window.addEventListener('touchend', stopDrag);
 
-  container.addEventListener('keydown', (e) => {
-    const current = Number(container.getAttribute('aria-valuenow')) || 50;
-    if (e.key === 'ArrowLeft') {
-      updateSplit(current - 5);
+  // Keyboard accessibility
+  const handleKeydown = (e) => {
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') {
       e.preventDefault();
-    } else if (e.key === 'ArrowRight') {
-      updateSplit(current + 5);
+      setSplit(currentSplit - 5, true);
+    } else if (e.key === 'ArrowRight' || e.key === 'ArrowUp') {
       e.preventDefault();
+      setSplit(currentSplit + 5, true);
+    } else if (e.key === 'Home') {
+      e.preventDefault();
+      setSplit(0, true);
+    } else if (e.key === 'End') {
+      e.preventDefault();
+      setSplit(100, true);
+    } else if (e.key === 'r' || e.key === 'R' || e.key === 'Enter') {
+      e.preventDefault();
+      setSplit(50, true);
+    }
+  };
+
+  stage.addEventListener('keydown', handleKeydown);
+  handle?.addEventListener('keydown', handleKeydown);
+
+  // Reset to Center
+  resetBtn?.addEventListener('click', () => {
+    setSplit(50, true);
+    showToast('Comparison divider reset to 50% center.');
+  });
+
+  // Quick Jumps
+  jumpBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetVal = Number(btn.getAttribute('data-val')) || 50;
+      setSplit(targetVal, true);
+    });
+  });
+
+  // Preset Mode Switcher
+  presetBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      presetBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+
+      const presetId = btn.getAttribute('data-preset');
+      const presetData = EDITING_LAB_CONFIG.presets.find(p => p.id === presetId) || EDITING_LAB_CONFIG.presets[0];
+
+      if (beforeTitle) beforeTitle.textContent = presetData.beforeTitle.replace('BEFORE: ', '');
+      if (beforeSub) beforeSub.textContent = presetData.beforeSubtitle;
+      if (afterTitle) afterTitle.textContent = presetData.afterTitle.replace('AFTER: ', '');
+      if (afterSub) afterSub.textContent = presetData.afterSubtitle;
+
+      if (presetId === 'preset-pacing') {
+        if (beforeStill) {
+          beforeStill.style.filter = 'contrast(0.7) brightness(1.1) blur(0.5px)';
+        }
+        if (afterStill) {
+          afterStill.style.filter = 'contrast(1.3) saturate(1.3) drop-shadow(0 0 10px rgba(139, 92, 246, 0.4))';
+        }
+        showToast('Editing Lab Mode: Pacing, SFX & Motion Polish');
+      } else {
+        if (beforeStill) {
+          beforeStill.style.filter = '';
+        }
+        if (afterStill) {
+          afterStill.style.filter = '';
+        }
+        showToast('Editing Lab Mode: Color Science (Flat Log vs. Midnight LUT)');
+      }
+    });
+  });
+
+  // Synchronized Dual-Video / Playback Controller
+  syncPlayBtn?.addEventListener('click', () => {
+    isSyncPlaying = !isSyncPlaying;
+
+    if (syncPlayIcon && syncPauseIcon) {
+      syncPlayIcon.style.display = isSyncPlaying ? 'none' : 'block';
+      syncPauseIcon.style.display = isSyncPlaying ? 'block' : 'none';
+    }
+
+    if (syncPlayText) {
+      syncPlayText.textContent = isSyncPlaying ? 'Pause Synchronized Comparison' : 'Simulate Dual Synchronized Playback';
+    }
+
+    if (videoBefore?.src && videoAfter?.src) {
+      if (isSyncPlaying) {
+        videoAfter.currentTime = videoBefore.currentTime;
+        videoBefore.play();
+        videoAfter.play();
+      } else {
+        videoBefore.pause();
+        videoAfter.pause();
+      }
+    } else {
+      if (isSyncPlaying) {
+        showToast('Dual-stream synchronized simulation active. 24fps frame lock.');
+      }
     }
   });
+
+  // Initial 50% split setup
+  setSplit(50);
 }
 
 /* ==========================================================================
@@ -772,10 +913,27 @@ function initBriefModal() {
 
   briefForm?.addEventListener('submit', (e) => {
     e.preventDefault();
-    const name = document.getElementById('clientName')?.value || 'there';
+    const name    = document.getElementById('clientName')?.value?.trim() || '';
+    const contact = document.getElementById('clientContact')?.value?.trim() || '';
+    const service = document.getElementById('projectType')?.value || '';
+    const details = document.getElementById('projectDetails')?.value?.trim() || '';
+
+    // Compose a pre-filled WhatsApp message with all the brief details
+    const message = [
+      `Hello Zaid! I found you through your portfolio and I'd like to work with you.`,
+      ``,
+      `*Name:* ${name}`,
+      `*Contact:* ${contact}`,
+      `*Service:* ${service}`,
+      `*Project Details:* ${details}`,
+    ].join('\n');
+
+    const waUrl = `https://wa.me/917083311379?text=${encodeURIComponent(message)}`;
+
     closeModal();
     briefForm.reset();
-    showToast(`Thank you, ${name}! Your project brief is registered. Zaid will review it shortly.`);
+    showToast(`Opening WhatsApp to send your brief to Zaid…`);
+    setTimeout(() => window.open(waUrl, '_blank', 'noopener,noreferrer'), 400);
   });
 }
 
@@ -784,7 +942,7 @@ function initBriefModal() {
    ========================================================================== */
 function initDirectContact() {
   const copyBtn = document.getElementById('copyEmailBtn');
-  const targetEmail = 'zaid.creative.edits@gmail.com';
+  const targetEmail = 'nilofarrouf30@gmail.com';
 
   copyBtn?.addEventListener('click', async () => {
     try {
@@ -810,6 +968,49 @@ function showToast(message) {
   setTimeout(() => {
     toast.classList.remove('show');
   }, 3800);
+}
+
+/* ==========================================================================
+   SCROLL-REVEAL ANIMATION ENGINE
+   ========================================================================== */
+function initScrollReveal() {
+  // Add .reveal class to section headers, service rows, pillar cards, about content
+  const revealTargets = [
+    { selector: '.section-header', delay: 0 },
+    { selector: '.service-row', delay: 100 },
+    { selector: '.pillar-card', delay: 100 },
+    { selector: '.about-poster-card', delay: 0 },
+    { selector: '.about-content', delay: 200 },
+    { selector: '.cta-crown', delay: 0 },
+    { selector: '.cta-headline', delay: 100 },
+    { selector: '.cta-hand-accent', delay: 200 },
+    { selector: '.cta-actions', delay: 300 },
+    { selector: '.hero-content', delay: 0 },
+    { selector: '.lab-main-header', delay: 0 },
+  ];
+
+  revealTargets.forEach(({ selector, delay }) => {
+    document.querySelectorAll(selector).forEach((el, i) => {
+      el.classList.add('reveal');
+      el.style.transitionDelay = `${delay * i}ms`;
+    });
+  });
+
+  if (!window.IntersectionObserver) return;
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('revealed');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.12,
+    rootMargin: '0px 0px -40px 0px'
+  });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 }
 
 /* ==========================================================================

@@ -1,40 +1,91 @@
 /**
  * ZAID PORTFOLIO - ASSET & PROJECT DATA ARCHITECTURE
- * 
- * Modular data store decoupling portfolio content from presentation components.
- * 
- * Schema:
- * - id: unique string identifier
- * - title: project headline
- * - category: 'reels' | 'youtube' | 'gaming' | 'grading' | 'graphics' | 'thumbnails' | 'invitations'
- * - categoryLabel: human-readable category name
- * - description: project narrative or brief scope
- * - format: aspect ratio & format descriptor (e.g. '9:16 Vertical Reel', '16:9 Widescreen')
- * - aspectRatio: CSS aspect-ratio value ('9 / 16', '16 / 9', '21 / 9', '4 / 5', '1 / 1')
- * - duration: optional time duration (e.g. '0:45', '12:30', or null for static design)
- * - date: optional release or creation date (e.g. 'Recent', '2026', or null)
- * - role: optional creative role (e.g. 'Lead Video Editor', 'Colorist', 'Graphic Designer')
- * - tools: array of software used
- * - featured: boolean indicating editorial prominence in layout
- * - videoUrl: null or string (YouTube embed URL, Vimeo URL, or direct MP4/WebM path)
- * - poster: null or string (custom high-res poster image path)
- * - thumbnail: null or string (card preview image path)
- * - isPlaceholder: boolean indicating slot is reserved for client assets
- * - placeholderLabel: clear UI label explaining the media slot
+ *
+ * Real client projects are listed first (isPlaceholder: false).
+ * File mapping (originals ? public/media/):
+ *   lv_0_20261024144650.mp4  ? /media/interview-storytelling-edit.mp4
+ *   lv_0_20261024163636.mp4  ? /media/color-grading-comparison.mp4
+ *   invitation (1).pdf       ? /media/brand-identity-card.pdf  (private, not linked publicly)
  */
 
 export const PORTFOLIO_CATEGORIES = [
-  { id: 'all', label: 'All Work' },
-  { id: 'reels', label: 'Reels & Shorts' },
-  { id: 'youtube', label: 'YouTube Videos' },
-  { id: 'gaming', label: 'Gaming Edits' },
-  { id: 'grading', label: 'Color Grading' },
-  { id: 'graphics', label: 'Graphic Design' },
-  { id: 'thumbnails', label: 'Thumbnails & Posters' },
+  { id: 'all',         label: 'All Work' },
+  { id: 'reels',       label: 'Reels & Shorts' },
+  { id: 'youtube',     label: 'YouTube Videos' },
+  { id: 'gaming',      label: 'Gaming Edits' },
+  { id: 'grading',     label: 'Color Grading' },
+  { id: 'graphics',    label: 'Graphic Design' },
+  { id: 'thumbnails',  label: 'Thumbnails & Posters' },
   { id: 'invitations', label: 'Invitation Cards' }
 ];
 
 export const PORTFOLIO_PROJECTS = [
+
+  // -- REAL PROJECTS ----------------------------------------------------------
+
+  {
+    id: 'real-interview-01',
+    title: 'Interview Storytelling Edit',
+    category: 'reels',
+    categoryLabel: 'Reels & Shorts',
+    description: 'A short-form interview edit featuring dynamic subtitles, bold highlighted keywords, and storytelling-focused pacing — crafted to hold attention and communicate a clear narrative within a vertical format.',
+    format: '9:16 Vertical Reel',
+    aspectRatio: '9 / 16',
+    duration: null,
+    date: '2026',
+    role: 'Video Editor',
+    tools: ['Premiere Pro', 'CapCut Pro'],
+    featured: true,
+    videoUrl: '/media/interview-storytelling-edit.mp4',
+    poster: '/media/poster-interview-edit.jpg',
+    thumbnail: '/media/poster-interview-edit.jpg',
+    isPlaceholder: false,
+    placeholderLabel: ''
+  },
+
+  {
+    id: 'real-grading-01',
+    title: 'From Natural to Cinematic',
+    category: 'grading',
+    categoryLabel: 'Color Grading',
+    description: 'A before-and-after landscape footage comparison showcasing the transformation achieved through color grading — from flat, natural-looking footage to a cinematic, mood-rich finish.',
+    format: '16:9 Widescreen',
+    aspectRatio: '16 / 9',
+    duration: null,
+    date: '2026',
+    role: 'Colorist',
+    tools: ['DaVinci Resolve', 'Premiere Pro'],
+    featured: true,
+    videoUrl: '/media/color-grading-comparison.mp4',
+    poster: '/media/poster-color-grading.jpg',
+    thumbnail: '/media/poster-color-grading.jpg',
+    isPlaceholder: false,
+    placeholderLabel: ''
+  },
+
+  {
+    id: 'real-brand-01',
+    title: 'Brand Identity & Card Design',
+    category: 'graphics',
+    categoryLabel: 'Graphic Design',
+    description: 'A designed business/contact card demonstrating precise layout, typographic hierarchy, and professional visual branding. Preview pending approval — personal details are kept private.',
+    format: '4:5 Card Format',
+    aspectRatio: '4 / 5',
+    duration: null,
+    date: '2026',
+    role: 'Graphic Designer',
+    tools: ['Adobe Illustrator', 'Photoshop'],
+    featured: true,
+    videoUrl: null,
+    imageUrl: null,
+    poster: '/media/poster-brand-identity.jpg',
+    thumbnail: '/media/poster-brand-identity.jpg',
+    isPlaceholder: true,
+    placeholderLabel: 'PREVIEW PENDING — Privacy Review in Progress'
+  },
+
+  // -- PLACEHOLDER SLOTS ------------------------------------------------------
+
   {
     id: 'proj-reel-01',
     title: 'High-Pacing Kinetic Lifestyle Reel',
@@ -47,8 +98,8 @@ export const PORTFOLIO_PROJECTS = [
     date: '2026',
     role: 'Video Editor & Sound Designer',
     tools: ['Premiere Pro', 'After Effects'],
-    featured: true,
-    videoUrl: null, // Ready for client media link
+    featured: false,
+    videoUrl: null,
     poster: null,
     thumbnail: null,
     isPlaceholder: true,
@@ -66,7 +117,7 @@ export const PORTFOLIO_PROJECTS = [
     date: '2026',
     role: 'Lead Video Editor',
     tools: ['Premiere Pro', 'DaVinci Resolve'],
-    featured: true,
+    featured: false,
     videoUrl: null,
     poster: null,
     thumbnail: null,
@@ -104,7 +155,7 @@ export const PORTFOLIO_PROJECTS = [
     date: '2026',
     role: 'Colorist',
     tools: ['DaVinci Resolve', 'Color Wheels'],
-    featured: true,
+    featured: false,
     videoUrl: null,
     poster: null,
     thumbnail: null,
@@ -161,7 +212,7 @@ export const PORTFOLIO_PROJECTS = [
     date: '2026',
     role: 'Stationery Designer',
     tools: ['Illustrator', 'Photoshop'],
-    featured: true,
+    featured: false,
     videoUrl: null,
     poster: null,
     thumbnail: null,
@@ -189,7 +240,36 @@ export const PORTFOLIO_PROJECTS = [
   }
 ];
 
-// Aliases for seamless compatibility
 export const portfolioCategories = PORTFOLIO_CATEGORIES;
 export const portfolioProjects = PORTFOLIO_PROJECTS;
 
+export const EDITING_LAB_CONFIG = {
+  sectionTitle: 'Interactive Editing Lab',
+  sectionSubtitle: "Side-by-side inspection between unedited source footage and Zaid's post-production master.",
+  presets: [
+    {
+      id: 'preset-color',
+      name: 'Color Grade & Curve Calibration',
+      badge: 'Color Science',
+      beforeTitle: 'BEFORE: Raw Sensor Capture',
+      beforeSubtitle: 'Flat Log profile, washed out dynamic range, zero LUT',
+      afterTitle: "AFTER: Zaid's Midnight Grade",
+      afterSubtitle: 'Rich contrast, protected skin tones, electric violet atmosphere',
+      beforeVideoUrl: null,
+      afterVideoUrl: null,
+      isDemoPlaceholder: true
+    },
+    {
+      id: 'preset-pacing',
+      name: 'Pacing, SFX & Motion Polish',
+      badge: 'Visual Storytelling',
+      beforeTitle: 'BEFORE: Uncut Camera Take',
+      beforeSubtitle: 'Static framing, raw camera microphone noise, unpaced flow',
+      afterTitle: 'AFTER: Dynamic Narrative Cut',
+      afterSubtitle: 'Speed ramping, beat-synced transients, kinetic titles & punchy audio',
+      beforeVideoUrl: null,
+      afterVideoUrl: null,
+      isDemoPlaceholder: true
+    }
+  ]
+};

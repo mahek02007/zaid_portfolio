@@ -1,177 +1,195 @@
 /**
- * ZAID PORTFOLIO - ASSET & PROJECT CONFIGURATION
+ * ZAID PORTFOLIO - ASSET & PROJECT DATA ARCHITECTURE
  * 
- * Instructions for adding real client work:
- * 1. To add a video: Set `type: "video"`, provide `videoUrl` (YouTube embed, Vimeo, or local MP4 path),
- *    and provide a high-res `thumbnailUrl`.
- * 2. To add graphic design/invitations: Set `type: "image"`, provide `imageUrl` and aspect ratio.
- * 3. Categorize into: 'reels', 'youtube', 'gaming', 'graphics', or 'invitations'.
+ * Modular data store decoupling portfolio content from presentation components.
+ * 
+ * Schema:
+ * - id: unique string identifier
+ * - title: project headline
+ * - category: 'reels' | 'youtube' | 'gaming' | 'grading' | 'graphics' | 'thumbnails' | 'invitations'
+ * - categoryLabel: human-readable category name
+ * - description: project narrative or brief scope
+ * - format: aspect ratio & format descriptor (e.g. '9:16 Vertical Reel', '16:9 Widescreen')
+ * - aspectRatio: CSS aspect-ratio value ('9 / 16', '16 / 9', '21 / 9', '4 / 5', '1 / 1')
+ * - duration: optional time duration (e.g. '0:45', '12:30', or null for static design)
+ * - date: optional release or creation date (e.g. 'Recent', '2026', or null)
+ * - role: optional creative role (e.g. 'Lead Video Editor', 'Colorist', 'Graphic Designer')
+ * - tools: array of software used
+ * - featured: boolean indicating editorial prominence in layout
+ * - videoUrl: null or string (YouTube embed URL, Vimeo URL, or direct MP4/WebM path)
+ * - poster: null or string (custom high-res poster image path)
+ * - thumbnail: null or string (card preview image path)
+ * - isPlaceholder: boolean indicating slot is reserved for client assets
+ * - placeholderLabel: clear UI label explaining the media slot
  */
 
-export const portfolioCategories = [
-  { id: 'all', label: 'All Projects' },
-  { id: 'reels', label: 'Reels & Shorts (9:16)' },
-  { id: 'youtube', label: 'YouTube & Longform' },
+export const PORTFOLIO_CATEGORIES = [
+  { id: 'all', label: 'All Work' },
+  { id: 'reels', label: 'Reels & Shorts' },
+  { id: 'youtube', label: 'YouTube Videos' },
   { id: 'gaming', label: 'Gaming Edits' },
+  { id: 'grading', label: 'Color Grading' },
   { id: 'graphics', label: 'Graphic Design' },
-  { id: 'invitations', label: 'Invitation Suite' }
+  { id: 'thumbnails', label: 'Thumbnails & Posters' },
+  { id: 'invitations', label: 'Invitation Cards' }
 ];
 
-export const portfolioProjects = [
+export const PORTFOLIO_PROJECTS = [
   {
-    id: 'proj-01',
-    title: 'High-Pacing Fashion & Lifestyle Reel',
+    id: 'proj-reel-01',
+    title: 'High-Pacing Kinetic Lifestyle Reel',
     category: 'reels',
-    categoryLabel: 'Short-Form Video',
-    format: '9:16 Vertical',
+    categoryLabel: 'Reels & Shorts',
+    description: 'Rapid-cut vertical edit featuring custom audio transients, kinetic typography overlays, beat-synced speed ramps, and high-retention hooks engineered for social algorithms.',
+    format: '9:16 Vertical Reel',
     aspectRatio: '9 / 16',
-    duration: '0:35',
-    isPlaceholder: true,
-    placeholderLabel: 'VIDEO SLOT 01: Client 9:16 Reel Ready',
-    description: 'Dynamic pacing, custom sound design, whip transitions, and kinetic typography tuned for Instagram & TikTok retention.',
-    deliverables: ['Custom Speed Ramping', 'Sound FX Layering', 'Kinetic Subtitles', 'Color Pop Grade'],
+    duration: '0:32',
+    date: '2026',
+    role: 'Video Editor & Sound Designer',
     tools: ['Premiere Pro', 'After Effects'],
-    // Placeholder video/thumbnail fallback (ready for actual client link):
-    videoUrl: null, 
-    thumbnailUrl: null
+    featured: true,
+    videoUrl: null, // Ready for client media link
+    poster: null,
+    thumbnail: null,
+    isPlaceholder: true,
+    placeholderLabel: 'VIDEO SLOT: 9:16 Short-Form Reel'
   },
   {
-    id: 'proj-02',
-    title: 'Cinematic YouTube Story & Documentary Cut',
+    id: 'proj-yt-01',
+    title: 'Documentary Storytelling & Cinematic Cut',
     category: 'youtube',
-    categoryLabel: 'Long-Form Storytelling',
+    categoryLabel: 'YouTube Videos',
+    description: 'Long-form narrative construction balancing ambient A-roll storytelling with dynamic B-roll cutaways. Multi-track audio sweetening, subtle lower thirds, and seamless narrative pacing.',
     format: '16:9 Widescreen',
     aspectRatio: '16 / 9',
-    duration: '8:45',
-    isPlaceholder: true,
-    placeholderLabel: 'VIDEO SLOT 02: Client 16:9 YouTube Cut Ready',
-    description: 'Narrative structure built to hold audience retention. Multitrack audio mixing, mood-driven color correction, and smooth pacing.',
-    deliverables: ['Narrative Editing', 'A-Roll / B-Roll Assembly', 'Dynamic Jump Cut Polish', 'Custom Lower Thirds'],
+    duration: '10:48',
+    date: '2026',
+    role: 'Lead Video Editor',
     tools: ['Premiere Pro', 'DaVinci Resolve'],
+    featured: true,
     videoUrl: null,
-    thumbnailUrl: null
+    poster: null,
+    thumbnail: null,
+    isPlaceholder: true,
+    placeholderLabel: 'VIDEO SLOT: 16:9 YouTube Narrative'
   },
   {
-    id: 'proj-03',
-    title: 'Free Fire / Esports Montage: Kinetic Action Edit',
+    id: 'proj-game-01',
+    title: 'Free Fire / Esports Kinetic Montage',
     category: 'gaming',
-    categoryLabel: 'Gaming Content',
+    categoryLabel: 'Gaming Edits',
+    description: 'Synchronized rhythm montage combining hard-impact beat drops, camera shake transients, optical glow trails, and 3D kill-feed highlight effects for competitive gameplay.',
     format: '16:9 Widescreen',
     aspectRatio: '16 / 9',
-    duration: '2:15',
-    isPlaceholder: true,
-    placeholderLabel: 'VIDEO SLOT 03: Gaming Highlight Montage Ready',
-    description: 'Impact beats synchronized with music transients, camera shake, visual glow overlays, and speed ramping on eliminations.',
-    deliverables: ['Beat-Synced Snaps', 'Motion Blur & Glow FX', '3D Kill Cam Accents', 'Custom Sound Impact Hits'],
+    duration: '2:18',
+    date: '2026',
+    role: 'Motion Editor & VFX',
     tools: ['Premiere Pro', 'After Effects'],
+    featured: false,
     videoUrl: null,
-    thumbnailUrl: null
+    poster: null,
+    thumbnail: null,
+    isPlaceholder: true,
+    placeholderLabel: 'VIDEO SLOT: Gaming Highlight Montage'
   },
   {
-    id: 'proj-04',
-    title: 'High-CTR YouTube Thumbnails & Brand Identity Suite',
+    id: 'proj-grade-01',
+    title: 'Cinematic Mood Grade: Teal & Orange / Midnight Noir',
+    category: 'grading',
+    categoryLabel: 'Color Grading',
+    description: 'Transforming flat Log sensor profiles into immersive cinematic color spaces. Features accurate skin-tone qualification, atmospheric shadow roll-off, and subtle highlight halation.',
+    format: '21:9 Ultra-Widescreen',
+    aspectRatio: '21 / 9',
+    duration: '1:15',
+    date: '2026',
+    role: 'Colorist',
+    tools: ['DaVinci Resolve', 'Color Wheels'],
+    featured: true,
+    videoUrl: null,
+    poster: null,
+    thumbnail: null,
+    isPlaceholder: true,
+    placeholderLabel: 'VIDEO SLOT: 21:9 Color Grade Reel'
+  },
+  {
+    id: 'proj-graph-01',
+    title: 'Midnight Creator Brand Identity & Badge System',
     category: 'graphics',
     categoryLabel: 'Graphic Design',
-    format: '16:9 Banner / Grid',
-    aspectRatio: '16 / 9',
+    description: 'Vector-crafted brand marks, custom crown emblem geometry, typography pairing, and modern dark-mode digital asset system for creative creators.',
+    format: '1:1 Square Brand Mark',
+    aspectRatio: '1 / 1',
     duration: null,
+    date: '2026',
+    role: 'Brand & Graphic Designer',
+    tools: ['Adobe Illustrator', 'Photoshop'],
+    featured: false,
+    videoUrl: null,
+    poster: null,
+    thumbnail: null,
     isPlaceholder: true,
-    placeholderLabel: 'DESIGN SLOT 04: Graphic & Thumbnail Package Ready',
-    description: 'High-contrast visuals, expressive facial cutouts, 3D text styling, and vibrant color balance engineered for maximum click-through rates.',
-    deliverables: ['Visual Composition', 'Subject Cutout & Glow', 'Bold Typography Design', 'Color Contrast Optimization'],
-    tools: ['Photoshop', 'Illustrator'],
-    imageUrl: null,
-    thumbnailUrl: null
+    placeholderLabel: 'DESIGN SLOT: Brand Identity Suite'
   },
   {
-    id: 'proj-05',
-    title: 'Luxury Royal Wedding & Celebration Invitation Suite',
+    id: 'proj-thumb-01',
+    title: 'High-CTR YouTube Thumbnails & Key Visuals',
+    category: 'thumbnails',
+    categoryLabel: 'Thumbnails & Posters',
+    description: 'Psychology-driven visual packaging engineered for elevated click-through rates. Features high-contrast rim lighting, expressive subject isolation, and bold legible hierarchy.',
+    format: '16:9 Banner Grid',
+    aspectRatio: '16 / 9',
+    duration: null,
+    date: '2026',
+    role: 'Thumbnail Specialist',
+    tools: ['Photoshop', 'Camera Raw'],
+    featured: false,
+    videoUrl: null,
+    poster: null,
+    thumbnail: null,
+    isPlaceholder: true,
+    placeholderLabel: 'DESIGN SLOT: YouTube Thumbnail Set'
+  },
+  {
+    id: 'proj-inv-01',
+    title: 'Luxury Royal Wedding & Celebration Suite',
     category: 'invitations',
     categoryLabel: 'Invitation Cards',
+    description: 'Handcrafted stationery design for royal weddings, engagements, milestone birthdays, and exclusive festivals. Formatted for digital sharing and fine print production.',
     format: '4:5 Editorial Card',
     aspectRatio: '4 / 5',
     duration: null,
+    date: '2026',
+    role: 'Stationery Designer',
+    tools: ['Illustrator', 'Photoshop'],
+    featured: true,
+    videoUrl: null,
+    poster: null,
+    thumbnail: null,
     isPlaceholder: true,
-    placeholderLabel: 'DESIGN SLOT 05: Custom Invitation Showcase Ready',
-    description: 'Bespoke animated and static digital invites tailored for weddings, engagements, milestone birthdays, and exclusive festivals.',
-    deliverables: ['Custom Motifs & Flourishes', 'Bilingual Font Pairing', 'Digital Sharing Optimization', 'Print-Ready PDF & Web MP4'],
-    tools: ['Illustrator', 'Photoshop', 'After Effects'],
-    imageUrl: null,
-    thumbnailUrl: null
+    placeholderLabel: 'DESIGN SLOT: Royal Invitation Suite'
   },
   {
-    id: 'proj-06',
-    title: 'Cinematic Mood Grade: Teal & Orange / Midnight Noir',
-    category: 'youtube',
-    categoryLabel: 'Color Grading',
-    format: '21:9 Ultra-Widescreen',
-    aspectRatio: '21 / 9',
-    duration: '1:10',
-    isPlaceholder: true,
-    placeholderLabel: 'VIDEO SLOT 06: Before/After Color Grade Reel Ready',
-    description: 'Transforming flat Log sensor profiles into rich, cinematic color spaces with preserved skin tones and deep atmospheric shadows.',
-    deliverables: ['Log to Rec.709 Correction', 'Shot Matching', 'Skin Tone Isolation', 'Atmospheric Vignette & Glow'],
-    tools: ['DaVinci Resolve', 'Premiere Pro'],
+    id: 'proj-reel-02',
+    title: 'Viral Social Short: Speed Ramps & SFX',
+    category: 'reels',
+    categoryLabel: 'Reels & Shorts',
+    description: 'Punchy 15-second sound-driven cut optimized for Instagram Explore and YouTube Shorts feeds. Fluid speed ramping transitions and bold subtitle styling.',
+    format: '9:16 Vertical Reel',
+    aspectRatio: '9 / 16',
+    duration: '0:18',
+    date: '2026',
+    role: 'Video Editor',
+    tools: ['Premiere Pro', 'CapCut Pro'],
+    featured: false,
     videoUrl: null,
-    thumbnailUrl: null
+    poster: null,
+    thumbnail: null,
+    isPlaceholder: true,
+    placeholderLabel: 'VIDEO SLOT: 9:16 Viral Short'
   }
 ];
 
-export const servicesData = [
-  {
-    number: '01',
-    title: 'Video Editing',
-    headline: 'High-Retention Short & Long-Form Video',
-    description: 'Tailored edits designed for modern algorithms and viewer engagement across YouTube, Instagram Reels, and Shorts.',
-    features: [
-      'Pacing & narrative architecture',
-      'Dynamic speed ramping & seamless whip pans',
-      'Engaging subtitles & kinetic typography',
-      'Custom sound FX & multitrack music mastering',
-      'Gaming montages (Free Fire, FPS, Esports)'
-    ],
-    accent: 'violet'
-  },
-  {
-    number: '02',
-    title: 'Graphic Design',
-    headline: 'High-Impact Brand Visuals & Thumbnails',
-    description: 'Eye-catching graphic assets built to stop scrolling fingers and establish an unmistakable visual identity.',
-    features: [
-      'High-CTR YouTube thumbnails',
-      'Event & promotional posters',
-      'Social media banners & channel art',
-      'Brand logo marks & badges',
-      'Visual storytelling layouts'
-    ],
-    accent: 'lavender'
-  },
-  {
-    number: '03',
-    title: 'Color Grading',
-    headline: 'Atmospheric Moods & Cinematic Looks',
-    description: 'Elevating raw footage into immersive cinematic experiences with bespoke color palettes and consistent tone.',
-    features: [
-      'Cinematic contrast & curve calibration',
-      'Natural true-to-life skin tone balancing',
-      'Modern stylized looks (Midnight, Neon, Teal & Orange)',
-      'Lighting enhancement & vignette shaping',
-      'Shot-to-shot consistency across multi-cam setups'
-    ],
-    accent: 'cyan'
-  },
-  {
-    number: '04',
-    title: 'Invitation Cards',
-    headline: 'Bespoke Celebration & Event Invitations',
-    description: 'Handcrafted digital and print-ready invitation suites for life’s most cherished celebrations.',
-    features: [
-      'Royal Wedding & Reception cards',
-      'Engagements & Anniversary invitations',
-      'Milestone Birthday & Party graphics',
-      'Festival greetings & Corporate launch cards',
-      'Digital animated video invitations'
-    ],
-    accent: 'violet'
-  }
-];
+// Aliases for seamless compatibility
+export const portfolioCategories = PORTFOLIO_CATEGORIES;
+export const portfolioProjects = PORTFOLIO_PROJECTS;
+

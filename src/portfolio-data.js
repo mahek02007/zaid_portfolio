@@ -28,7 +28,7 @@ export const PORTFOLIO_PROJECTS = [
     title: 'Interview Storytelling Edit',
     category: 'reels',
     categoryLabel: 'Reels & Shorts',
-    description: 'A short-form interview edit featuring dynamic subtitles, bold highlighted keywords, and storytelling-focused pacing — crafted to hold attention and communicate a clear narrative within a vertical format.',
+    description: 'A short-form interview edit featuring dynamic subtitles, bold highlighted keywords, and storytelling-focused pacing â€” crafted to hold attention and communicate a clear narrative within a vertical format.',
     format: '9:16 Vertical Reel',
     aspectRatio: '9 / 16',
     duration: null,
@@ -48,7 +48,7 @@ export const PORTFOLIO_PROJECTS = [
     title: 'From Natural to Cinematic',
     category: 'grading',
     categoryLabel: 'Color Grading',
-    description: 'A before-and-after landscape footage comparison showcasing the transformation achieved through color grading — from flat, natural-looking footage to a cinematic, mood-rich finish.',
+    description: 'A before-and-after landscape footage comparison showcasing the transformation achieved through color grading â€” from flat, natural-looking footage to a cinematic, mood-rich finish.',
     format: '16:9 Widescreen',
     aspectRatio: '16 / 9',
     duration: null,
@@ -68,7 +68,7 @@ export const PORTFOLIO_PROJECTS = [
     title: 'Brand Identity & Card Design',
     category: 'graphics',
     categoryLabel: 'Graphic Design',
-    description: 'A designed business/contact card demonstrating precise layout, typographic hierarchy, and professional visual branding. Preview pending approval — personal details are kept private.',
+    description: 'A designed business/contact card demonstrating precise layout, typographic hierarchy, and professional visual branding. Preview pending approval â€” personal details are kept private.',
     format: '4:5 Card Format',
     aspectRatio: '4 / 5',
     duration: null,
@@ -81,7 +81,7 @@ export const PORTFOLIO_PROJECTS = [
     poster: '/media/poster-brand-identity.jpg',
     thumbnail: '/media/poster-brand-identity.jpg',
     isPlaceholder: true,
-    placeholderLabel: 'PREVIEW PENDING — Privacy Review in Progress'
+    placeholderLabel: 'PREVIEW PENDING â€” Privacy Review in Progress'
   },
 
   // -- PLACEHOLDER SLOTS ------------------------------------------------------
